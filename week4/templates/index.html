@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Homepage</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+  </head>
+  <body>
+
+    <style>
+        .card{
+            display: block;
+            width: 50%;
+            height: auto;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px 10px;
+            align-items: center;
+        }
+
+        button{
+            background-color: grey;
+            color:white;
+            margin: 5px 10px;
+        }
+
+        #url_form{
+            display: none;
+        }
+
+        #upload_form{
+            display: none;
+        }
+        #img_box{
+            background-color: transparent;
+            width: 400px;
+            height: 400px;
+        }
+        
+        #img_box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            overflow: hidden;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+        
+    </style>
+{%if message%}
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>Holy guacamole!</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif%}
+
+    
+    <div class="container">
+        <div class="row">
+    <div class="card" >
+        <div class="card-body">
+            <button class='btn btn-primary' id="from_url" onclick="show_url_form()"> From URL </button>
+            <br>
+            <button class='btn btn-primary' id="from_upload" onclick="show_url_upload()"> Upload file</button>
+            
+        </div>
+        </div>
+    </div>
+
+    <div class="card" id="upload_form">
+        <div class="card-body">
+            <form method="POST" action="/search_upload" enctype="multipart/form-data"> 
+                <label>Upload File:</label>
+                <input  class="form-control" type="file"  accept="image/png, image/jpeg, image/jpg" name='file' onchange="readURL(this);"/>
+                
+                <input class="btn btn-secondary" type="submit" value="Submit">
+            </form>   
+        </div>
+    </div>
+
+    <div class="card" id="url_form">
+        
+            <form method="POST" action="/search_url"> 
+                <label>URL :</label>
+                <input  class="form-control" type="text" name='url'/>           
+                <input class="btn btn-secondary" type="submit" value="Submit"/>
+            </form>  
+        
+    </div>
+    <div class="card-deck">
+        <div class='card' id="img_box" >  
+                
+            <img id="display" src={{img_url}} alt="" onerror="hideError(this);"/>
+            
+            
+        </div>
+        <div class='card'>
+            <div class="card-body">
+            {%if content and content['FaceDetails']|length > 0 %}
+            {% for image in content['FaceDetails']%}
+                <p>{{image['Emotion']}}</p>
+                <p>{{image['Gender'][0]}} with confidence {{'%0.2f'| format(image['Gender'][1]|float)}} </p>
+                <p>{{image['AgeRange']}}</p>
+                <p>{{image['Sunglasses']}}</p>
+                <p>{{image['Eyeglasses']}}</p>
+                <p>{{image['Mustache']}}</p>
+                <p>{{image['Beard']}}</p>
+            {% endfor%}
+    
+            {% endif %}
+            </div>
+        </div>
+        
+    </div>
+    
+    
+    
+</div>
+
+    <script>
+        var url_form = document.getElementById("url_form");
+        var upload_form = document.getElementById("upload_form");
+        var img = document.getElementById("display")
+        var input_url = document.getElementById("url")
+
+        function hideError(input){
+            input.style.width=0;
+            input.style.height=0;
+        }
+
+        function readURL(input){
+            
+
+
+            if (input.files && input.files[0]){
+                
+                var reader = new FileReader();
+                img.style.display = 'block';
+                reader.onload = function(e){
+                    $("#display")
+                    .attr('src',e.target.result)
+                    .height(400)
+                    .width(400);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function showImage(input){
+            console.log(input.value)
+        }
+
+        function show_url_form(){            
+            upload_form.style.display = "none";
+            if (url_form.style.display === "none"){
+                url_form.style.display = "block";
+            }else{
+                url_form.style.display = "none";
+            }
+        }
+
+        function show_url_upload(){
+            url_form.style.display = "none";
+            if (upload_form.style.display === "none"){
+                upload_form.style.display = "block";
+            }else{
+                upload_form.style.display = "none";
+            }
+        }
+
+
+
+    </script>
+    <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  </body>
+</html>
