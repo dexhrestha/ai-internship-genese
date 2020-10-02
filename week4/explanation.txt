@@ -1,0 +1,7 @@
+Explanation of Assignment Week 4:
+
+In this lab we use AWS Rekognition API to find the facial feaures of input image. I have provided 3 endpoints in my application 
+1. /search_url
+This endpoint accepts POST form data with URL of image as input. The filename is extracted from URL to check whether the given URL contains an image. 
+The accepted extensions are JPG,PNG and JPEG. The image is then passed through a function which calls the AWS Rekognition API using Boto3 client. 
+Boto3 is a Python package that provides interfaces to Amazon Web Services and stable version of Boto.
