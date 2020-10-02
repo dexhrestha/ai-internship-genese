@@ -1,5 +1,4 @@
 import logging
-
 import requests
 from urllib import parse
 from PIL import Image
@@ -163,5 +162,6 @@ def generate_content(img_url):
                                             })
         return content
     except:
-        return "An error occured at server. Please try again later"
+        content['FaceDetails'].append({'Error':"An error occured at server. Please try again later"})
+        return content
 

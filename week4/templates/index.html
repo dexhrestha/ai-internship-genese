@@ -107,8 +107,11 @@
         </div>
         <div class='card'>
             <div class="card-body">
-            {%if content and content['FaceDetails']|length > 0 %}
+                {%if content %}
             {% for image in content['FaceDetails']%}
+                {% if image['Error'] %}
+                <p> {{image['Error']}}</p>
+                {% else %}
                 <p>{{image['Emotion']}}</p>
                 <p>{{image['Gender'][0]}} with confidence {{'%0.2f'| format(image['Gender'][1]|float)}} </p>
                 <p>{{image['AgeRange']}}</p>
@@ -116,9 +119,10 @@
                 <p>{{image['Eyeglasses']}}</p>
                 <p>{{image['Mustache']}}</p>
                 <p>{{image['Beard']}}</p>
+                {% endif %}
             {% endfor%}
-    
             {% endif %}
+
             </div>
         </div>
         
