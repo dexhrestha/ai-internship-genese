@@ -4,4 +4,12 @@ In this lab we use AWS Rekognition API to find the facial feaures of input image
 1. /search_url
 This endpoint accepts POST form data with URL of image as input. The filename is extracted from URL to check whether the given URL contains an image. 
 The accepted extensions are JPG,PNG and JPEG. The image is then passed through a function which calls the AWS Rekognition API using Boto3 client. 
-Boto3 is a Python package that provides interfaces to Amazon Web Services and stable version of Boto.
+Boto3 is a Python package that provides interfaces to Amazon Web Services and stable version of Boto. The response json from the API was then processed to provide required 
+outputs such as Gender, Emotions etc.
+
+2. /search_upload
+This endpoint accepts POST form data with image file as input. The image is  validated and then uploaded to s3. The method to  upload to s3 returns a URL of that particular image. Then using the same function as above we get tyhe desired processed output. The file is then deleted using AWS lambda as soon as the image is read.
+
+3. /api/search_url
+This endpoint provides the processed response from Rekognition API in json format os that it can be used for other applications.
+
