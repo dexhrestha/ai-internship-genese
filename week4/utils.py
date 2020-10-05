@@ -9,6 +9,7 @@ client = boto3.client('rekognition')
 s3 = boto3.client(
    "s3"
 )
+s3_resource = boto3.resource('s3')
 def is_url(path):
     """
     Checks if given path is a URL
@@ -56,6 +57,7 @@ def allowed_file(filename):
         return True 
     return False
     
+
 def upload_file_to_s3(file, bucket_name,get_url=False, acl="public-read"):
     """
     Uploads file to given s3 bucket
@@ -86,6 +88,17 @@ def upload_file_to_s3(file, bucket_name,get_url=False, acl="public-read"):
         return False
     return url if get_url else True
 
+def delete_from_s3(url):
+    bucket_name = url.split('.')[0].split("//")[-1]
+    object_name = url.split('/')[-1]
+    
+    obj = s3_resource.Object(bucket_name,object_name)
+    try:
+        obj.delete()
+        return True
+    except Exception as e:
+        logging.error(e)
+        return False
 
 def get_facial_features(client,path=None):
     """
@@ -160,6 +173,7 @@ def generate_content(img_url):
                                             'Mustache':get_mustache(image['Mustache']),
                                             'Beard':get_beard(image['Beard']),
                                             })
+                                        
         return content
     except:
         content['FaceDetails'].append({'Error':"An error occured at server. Please try again later"})
