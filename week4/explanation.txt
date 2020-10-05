@@ -8,8 +8,7 @@ Boto3 is a Python package that provides interfaces to Amazon Web Services and st
 outputs such as Gender, Emotions etc.
 
 2. /search_upload
-This endpoint accepts POST form data with image file as input. The image is  validated and then uploaded to s3. The method to  upload to s3 returns a URL of that particular image. Then using the same function as above we get tyhe desired processed output. The file is then deleted using AWS lambda as soon as the image is read.
-
+This endpoint accepts POST form data with image file as input. The image is  validated and then uploaded to s3. The method to  upload to s3 returns a URL of that particular image. Then using the same function as above we get tyhe desired processed output. The file is then deleted using boto after performing analysis.
 3. /api/search_url
 This endpoint provides the processed response from Rekognition API in json format os that it can be used for other applications.
 
