@@ -3,20 +3,14 @@ import urllib3
 http = urllib3.PoolManager()
 import json
 
-from credentials import API_KEY
+
+
+API_KEY = "135a5fb9801a4571bce160650200610"
+
+
+
 
 def get_current_weather(location):
-
-    """
-        Calls the API to get current weather status
-
-        Args:
-        location str: Name of the city
-
-        Returns:
-        content str: The weather status of given location
-        card str: Display card for weather status
-    """
     URL = f"http://api.weatherapi.com/v1/current.json?key={API_KEY}"
     key = f"&q={location}"
     # res = requests.get(URL+key)
@@ -31,7 +25,7 @@ def get_current_weather(location):
         card_content = [
             {
              "title":"Current Weather",
-             "subTitle":"Weather current",
+             "subTitle":weather['condition']['text'],
              "imageUrl":"http:"+weather['condition']['icon'],
              "attachmentLinkUrl":"https://cdn1.vectorstock.com/i/1000x1000/71/80/weather-icon-with-sun-and-clouds-vector-11107180.jpg",
              "buttons":[ 
@@ -48,25 +42,13 @@ def get_current_weather(location):
           "genericAttachments": card_content
             }        
         return content,card
-
+    else:
+        content = "Sorry I cannot understand the location"
+        return content,None
 
 def get_forecast_weather(time,location):
-
-    
-    """
-        Calls the API to get weather forecast for given time and location
-        Args:
-        time: str: Today/Tomorrow/Weekly
-        location str: Name of the city
-
-        Returns:
-        content str: The weather forecast of given location
-        card str: Display card for  weather forecast
-    """
-
     URL = f"http://api.weatherapi.com/v1/forecast.json?key={API_KEY}"
-
-    time_dict = {'today':1,'tomorrow':2,'weekly':7}
+    time_dict = {'today':1,'tomorrow':2}
     
     key = f"&q={location}"
     
@@ -93,22 +75,12 @@ def get_forecast_weather(time,location):
           "genericAttachments": card_content
             }        
         return content,card
+    else:
+        content = "Sorry I cannot understand the location"
+        return content,None
         
 
 def generate_card(title,subTitle,icon):
-
-    """
-        Calls the API to get weather forecast for given time and location
-        Args:
-        title: str: Time of the day/Day of the Week
-        subTitle str: Weather description
-        icon str: URL of the weather icon
-
-        Returns:
-        card_content str: Display card for  weather forecast
-    """
-    
-
     return {
              "title":title,
              "subTitle":subTitle,

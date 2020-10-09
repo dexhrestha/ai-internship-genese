@@ -1,0 +1,14 @@
+Weather Chatbot
+
+Chatbot name: Mausam
+
+Intents :
+Greeting: This intent is triggered when user starts the conversation
+SetLocation: This intent is triggered to store a default location for the user
+CurrentWeather : This intent is triggered to get the current weather status of a given location
+GetForecast : This intent is triggered to get the forecast of a location at a given time. If no time is given same day's weather forecast is assumed.
+
+The user starts the conversation and the bot will first ask for a default location. After the location is set, the user can ask weather related queries.
+After fulfillment of each intent the specified lambda function will be triggered and appropriate response is generated.
+
+ 
